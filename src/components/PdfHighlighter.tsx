@@ -86,6 +86,7 @@ interface Props<T_HT> {
     transformSelection: () => void
   ) => JSX.Element | null;
   enableAreaSelection: (event: MouseEvent) => boolean;
+  onDocumentReady: (viewer: any) => void;
 }
 
 const EMPTY_ID = "empty-id";
@@ -179,7 +180,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         container: this.containerNode!,
         eventBus: this.eventBus,
         // enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
-        textLayerMode: 2,
+        textLayerMode: 1,
         removePageBorders: true,
         linkService: this.linkService,
         l10n: NullL10n,
@@ -469,11 +470,12 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   };
 
   onDocumentReady = () => {
-    const { scrollRef } = this.props;
+    const { scrollRef, onDocumentReady } = this.props;
 
     this.handleScaleValue();
 
     scrollRef(this.scrollTo);
+    onDocumentReady(this);
   };
 
   onSelectionChange = () => {
