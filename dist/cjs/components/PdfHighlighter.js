@@ -227,8 +227,10 @@ class PdfHighlighter extends react_1.PureComponent {
                 rects,
                 pageNumber: pages[0].number,
             };
+            const node = Array.from(range.cloneContents().children);
+            const textContents = node.filter(n => n.innerHTML !== '').map(n => n.innerHTML).join(' ');
             const content = {
-                text: range.toString(),
+                text: textContents,
             };
             const scaledPosition = this.viewportPositionToScaled(viewportPosition);
             this.setTip(viewportPosition, onSelectionFinished(scaledPosition, content, () => this.hideTipAndSelection(), () => this.setState({
