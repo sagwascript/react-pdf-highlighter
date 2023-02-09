@@ -5,6 +5,7 @@ interface Props {
     workerSrc: string;
     url: string;
     beforeLoad: JSX.Element;
+    onProgress: Function;
     errorMessage?: JSX.Element;
     children: (pdfDocument: PDFDocumentProxy) => JSX.Element;
     onError?: (error: Error) => void;

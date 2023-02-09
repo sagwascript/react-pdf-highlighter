@@ -9,6 +9,7 @@ interface Props {
 
   url: string;
   beforeLoad: JSX.Element;
+  onProgress: Function;
   errorMessage?: JSX.Element;
   children: (pdfDocument: PDFDocumentProxy) => JSX.Element;
   onError?: (error: Error) => void;
@@ -77,12 +78,17 @@ export class PdfLoader extends Component<Props, State> {
           return;
         }
 
-        return getDocument({
+        const documentLoader = getDocument({
           ...this.props,
           ownerDocument,
           cMapUrl,
           cMapPacked,
-        }).promise.then((pdfDocument) => {
+        });
+        if (this.props.onProgress) {
+          documentLoader.onProgress = this.props.onProgress;
+        }
+
+        return documentLoader.promise.then((pdfDocument) => {
           this.setState({ pdfDocument });
         });
       })

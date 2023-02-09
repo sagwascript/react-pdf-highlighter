@@ -44,9 +44,13 @@ export class PdfLoader extends Component {
             if (!url) {
                 return;
             }
-            return getDocument(Object.assign(Object.assign({}, this.props), { ownerDocument,
+            const documentLoader = getDocument(Object.assign(Object.assign({}, this.props), { ownerDocument,
                 cMapUrl,
-                cMapPacked })).promise.then((pdfDocument) => {
+                cMapPacked }));
+            if (this.props.onProgress) {
+                documentLoader.onProgress = this.props.onProgress;
+            }
+            return documentLoader.promise.then((pdfDocument) => {
                 this.setState({ pdfDocument });
             });
         })

@@ -66,9 +66,13 @@ class PdfLoader extends react_1.Component {
             if (!url) {
                 return;
             }
-            return (0, pdf_1.getDocument)(Object.assign(Object.assign({}, this.props), { ownerDocument,
+            const documentLoader = (0, pdf_1.getDocument)(Object.assign(Object.assign({}, this.props), { ownerDocument,
                 cMapUrl,
-                cMapPacked })).promise.then((pdfDocument) => {
+                cMapPacked }));
+            if (this.props.onProgress) {
+                documentLoader.onProgress = this.props.onProgress;
+            }
+            return documentLoader.promise.then((pdfDocument) => {
                 this.setState({ pdfDocument });
             });
         })
